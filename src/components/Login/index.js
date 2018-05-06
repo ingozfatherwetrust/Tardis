@@ -11,8 +11,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import axios from 'axios';
-// import fs from 'filestream/read';
+import sha256 from 'crypto-js/sha256';
+import hmacSha512 from 'crypto-js/hmac-sha512';
+import Base64 from 'crypto-js/enc-base64';
+
 
 type Props = {};
 
@@ -23,6 +25,7 @@ export default class Login extends Component<Props> {
   }
 
   checkLoginStatus() {
+
 
     fetch('http://localhost:3000/login', {
       method: 'POST',

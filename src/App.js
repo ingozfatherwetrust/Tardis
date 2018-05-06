@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Login from './components/Login';
 import KeyFob from './components/KeyFob';
+import HomePage from'./components/HomePage';
 
 type Props = {};
 
@@ -20,9 +21,10 @@ export default class App extends Component<Props> {
     this.setState({jwt: jwtVal});
   };
   pickPage() {
+
     if(this.state.loggedIn) {
       return(
-          <KeyFob keyFobJWT={this.state.jwt}/>
+          <HomePage />
       )
     } else {
       return(
@@ -35,6 +37,7 @@ export default class App extends Component<Props> {
       <View style={styles.container}>
         {/*<Login onLogin={this.handleLogin}/>*/}
           {this.pickPage()}
+          {/*<HomePage/>*/}
       </View>
     );
   }
@@ -43,9 +46,9 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // backgroundColor: '#F5FCFF',
   },
   instructions: {
     textAlign: 'center',

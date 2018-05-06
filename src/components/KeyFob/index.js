@@ -44,12 +44,6 @@ export default class KeyFob extends Component<Props> {
         console.log(err.text());
       })
   }
-  getLockedStatus() {
-    fetch()
-  }
-  lockTardisMobile() {
-    alert('lock');
-  }
   render() {
     return (
       <View style={styles.container}>
