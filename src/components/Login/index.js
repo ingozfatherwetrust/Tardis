@@ -19,21 +19,66 @@ import Base64 from 'crypto-js/enc-base64';
 type Props = {};
 
 export default class Login extends Component<Props> {
+  CryptoJS = require('crypto-js');
   constructor(props) {
     super(props);
     this.state = {username: '', password: ''};
   }
+  header = {
+      'typ': 'JWT',
+      'alg': 'HS256'
+  };
+  // message = {
+  //       "client_id": "client_id",
+  //       "username": "username",
+  //       "password": "password"
+  //   };
+    client_secret = 'client_secret';
+  base64url(source) {
+      // Encode in classical base64
+      let encodedSource = this.CryptoJS.enc.Base64.stringify(source);
 
+      // Remove padding equal characters
+      encodedSource = encodedSource.replace(/=+$/, '');
+
+      // Replace characters according to base64url specifications
+      encodedSource = encodedSource.replace(/\+/g, '-');
+      encodedSource = encodedSource.replace(/\//g, '_');
+
+      return encodedSource;
+  }
   checkLoginStatus() {
+  // const hashDigest = sha256(this.message);
+  // const hmacDigest = Base64.stringify(hmacSha512(hashDigest, this.client_secret));
+  // console.log(hashDigest);
+  // console.log(hmacDigest);
+  //     var CryptoJS = require('crypto-js');crypto-js
+      let message = {
+          "client_id": "client_id",
+          "username": this.state.username,
+          "password": this.state.password
+      };
+      let jwt;
+      let stringifiedHeader = this.CryptoJS.enc.Utf8.parse(JSON.stringify(this.header));
+      let encodedHeader = this.base64url(stringifiedHeader);
 
+      let stringifiedData = this.CryptoJS.enc.Utf8.parse(JSON.stringify(message));
+      let encodedData = this.base64url(stringifiedData);
+      // console.log(encodedData);
 
-    fetch('http://localhost:3000/login', {
+      let signature = encodedHeader + "." + encodedData;
+      signature = this.CryptoJS.HmacSHA256(signature, this.client_secret);
+      signature = this.base64url(signature);
+      // console.log(signature);
+      jwt = encodedHeader + '.' + encodedData + '.' + signature;
+
+      fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {
           Accept: 'text/plain'
       },
-      body: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnRfaWQiOiJjbGllbnRfaWQiLCJ1c2VybmFtZSI6InVzZXJuYW1lIiwicGFzc3dvcmQiOiJwYXNzd29yZCJ9.Apw1vCdXsn5pvle-jIsjvf5i-NOW2bGp3BfuPR-gZWc'
-
+      // body: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnRfaWQiOiJjbGllbnRfaWQiLCJ1c2VybmFtZSI6InVzZXJuYW1lIiwicGFzc3dvcmQiOiJwYXNzd29yZCJ9.Apw1vCdXsn5pvle-jIsjvf5i-NOW2bGp3BfuPR-gZWc'
+      body: jwt
     })
     .then((res) => {
       // res = res.json();
