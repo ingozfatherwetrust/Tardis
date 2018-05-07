@@ -83,10 +83,17 @@ export default class Login extends Component<Props> {
     .then((res) => {
       // res = res.json();
       console.log(res);
-      this.props.onLogin(true);
+      if(res.status === 200){
+        // alert('worked');
+        this.props.onLogin(true);
+          res.text()
+              .then(res2 => this.props.myJWT(res2))
+      } else {
+        alert('Invalid credentials');
+      }
+      // this.props.onLogin(true);
       // this.props.myJWT('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnRfaWQiOiJjbGllbnRfaWQiLCJ1c2VybmFtZSI6InVzZXJuYW1lIiwicGFzc3dvcmQiOiJwYXNzd29yZCJ9.Apw1vCdXsn5pvle-jIsjvf5i-NOW2bGp3BfuPR-gZWc')
-      res.text()
-          .then(res2 => this.props.myJWT(res2))
+
     })
     .catch((err) => {
       console.log(err);

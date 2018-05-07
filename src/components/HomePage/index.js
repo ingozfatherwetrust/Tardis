@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import KeyFob from "../KeyFob";
+import Manual from "../Manual";
 
 export default class HomePage extends Component {
     state = {mode: 'HOME'};
@@ -28,10 +29,13 @@ export default class HomePage extends Component {
         }
         else if(this.state.mode === 'LOCKING'){
             return(
-                    <KeyFob />
+                <KeyFob />
             )
         } else {
-            alert(this.state.mode);
+            return(
+                <Manual />
+                )
+
         }
     }
     render() {
@@ -39,7 +43,7 @@ export default class HomePage extends Component {
             <View style={styles.container}>
                 {this.ChooseMode()}
             </View>
-        )
+        );
 
     }
 
